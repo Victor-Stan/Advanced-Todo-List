@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useParams } from "react-router-dom";
 import { auth, db } from '../firebase-config';
-import { addDoc, collection, query, where, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firestore';
+import { addDoc, collection, query, where, doc, deleteDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
 const TodoList = () => {
+  const { status } = useParams();
+  let todoStatus = status;
+  if (!status) {
+    todoStatus = 'in-progress';
+  }
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState('');
   const [editTask, setEditTask] = useState({ id: null, task: '' });
-  const [statusFilter, setStatusFilter] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => { 
       const user = auth.currentUser;
 
       if (user) {
-        const q = query(
-          collection(db, 'todos'),
-          where('userId', '==', user.uid),
-          statusFilter ? where('status', '==', statusFilter) : null
-        );
+        let q = collection(db, 'todos');
+        q = query(q, where('userId', '==', user.uid));
+
+        if (todoStatus === 'done') {
+          q = query(q, where('status', '==', 'Done'));
+        } else {
+          q = query(q, where('status', '==', 'In Progress'));
+        }
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
           const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -27,9 +35,9 @@ const TodoList = () => {
         return () => unsubscribe();
       }
     };
-
+    
     fetchData();
-  }, [db, statusFilter]);
+  }, [db, todoStatus]);
 
   const addTodo = async () => {
     await addDoc(collection(db, 'todos'), {
@@ -67,43 +75,49 @@ const TodoList = () => {
   };
 
   return (
-    <div>
-      <div>
-        <button onClick={() => setStatusFilter('Done')}>Done</button>
-        <button onClick={() => setStatusFilter('In Progress')}>In Progress</button>
-        
+    <div className="todo-list">
+      <div className="status-buttons">
+        <Link to="/todos/done">
+          <button className="status-btn">Done</button>
+        </Link>
+        <Link to="/todos/in-progress">
+          <button className="status-btn">In Progress</button>
+        </Link>
       </div>
-      <ul>
+      <ul className="todo-items">
         {todos.map((todo) => (
           <li key={todo.id}>
-            {editTask.id === todo.id ? (
-              <>
-                <textarea
-                  value={editTask.task}
-                  onChange={(e) => setEditTask({ ...editTask, task: e.target.value })}
-                />
-                <button onClick={saveEdit}>Save</button>
-                <button onClick={cancelEdit}>Cancel</button>
-              </>
-            ) : (
-              <>
-                {todo.task}
-                <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-                <button onClick={() => startEdit(todo.id, todo.task)}>Edit</button>
-                <button onClick={() => handleStatusChange(todo.id, todo.status)}>
-                  {todo.status === 'In Progress' ? 'Done' : 'In Progress'}
-                </button>
-              </>
-            )}
-          </li>
+          {editTask.id === todo.id ? (
+            <>
+              <textarea
+                value={editTask.task}
+                onChange={(e) => setEditTask({ ...editTask, task: e.target.value })}
+              />
+              <button onClick={saveEdit}>Save</button>
+              <button onClick={cancelEdit}>Cancel</button>
+            </>
+          ) : (
+            <>
+              {todo.task}
+              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+              <button onClick={() => startEdit(todo.id, todo.task)}>Edit</button>
+              <button onClick={() => handleStatusChange(todo.id, todo.status)}>
+                {todo.status === 'In Progress' ? 'Done' : 'In Progress'}
+              </button>
+            </>
+          )}
+        </li>
         ))}
       </ul>
-      <input
-        type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-      />
-      <button onClick={addTodo}>Add Todo</button>
+      <footer className="todo-footer">
+        <input
+          type="text"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          className="todo-input"
+        />
+        <button onClick={addTodo} className="add-btn">Add Todo</button>
+      </footer>
     </div>
   );
 };

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db, provider } from './firebase-config'; 
-import { signInWithPopup } from 'firebase/auth'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { auth, db, provider } from './firebase-config';
+import { signInWithPopup } from 'firebase/auth';
 import TodoList from './components/TodoList';
-
+import RedirectToTodos from "./components/RedirectToTodos";
+import './App.css';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -16,9 +18,7 @@ const App = () => {
   }, []);
 
   const handleLogin = async () => {
-  
-      await signInWithPopup(auth, provider);
-    
+    await signInWithPopup(auth, provider);
   };
 
   const handleLogout = () => {
@@ -26,14 +26,19 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="app">
       {user ? (
-        <>
-          <p>Welcome, {user.email}!</p>
-          <button onClick={handleLogout}>Logout</button>
-          <TodoList db={db} auth={auth} />
-         
-        </>
+        <Router>
+          <header className="app-header">
+            <h1>Welcome, {user.email}!</h1>
+            <p>{new Date().toDateString()}</p>
+            <button onClick={handleLogout}>Logout</button>
+          </header>
+          <Routes>
+           <Route path="/todos/:status" element={<TodoList db={db} auth={auth} />} />
+           <Route path="*" element={<RedirectToTodos />} />
+         </Routes>
+        </Router>
       ) : (
         <button onClick={handleLogin}>Login with Google</button>
       )}
