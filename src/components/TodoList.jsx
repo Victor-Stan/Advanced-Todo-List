@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { auth, db } from '../firebase-config';
 import { addDoc, collection, query, where, doc, deleteDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+
+
 
 const TodoList = () => {
   const { status } = useParams();
@@ -78,10 +82,10 @@ const TodoList = () => {
     <div className="todo-list">
       <div className="status-buttons">
         <Link to="/todos/done">
-          <button className="status-btn">Done</button>
+          <button className="done">Done</button>
         </Link>
         <Link to="/todos/in-progress">
-          <button className="status-btn">In Progress</button>
+          <button className="progress">In Progress</button>
         </Link>
       </div>
       <ul className="todo-items">
@@ -93,15 +97,15 @@ const TodoList = () => {
                 value={editTask.task}
                 onChange={(e) => setEditTask({ ...editTask, task: e.target.value })}
               />
-              <button onClick={saveEdit}>Save</button>
-              <button onClick={cancelEdit}>Cancel</button>
+              <button className='save' onClick={saveEdit}>Save</button>
+              <button className='cancel' onClick={cancelEdit}>Cancel</button>
             </>
           ) : (
             <>
               {todo.task}
-              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-              <button onClick={() => startEdit(todo.id, todo.task)}>Edit</button>
-              <button onClick={() => handleStatusChange(todo.id, todo.status)}>
+              <button className='delete' onClick={() => deleteTodo(todo.id)}>Delete</button>
+              <button className='edit' onClick={() => startEdit(todo.id, todo.task)}>Edit</button>
+              <button className='status' onClick={() => handleStatusChange(todo.id, todo.status)}>
                 {todo.status === 'In Progress' ? 'Done' : 'In Progress'}
               </button>
             </>
@@ -117,6 +121,8 @@ const TodoList = () => {
           className="todo-input"
         />
         <button onClick={addTodo} className="add-btn">Add Todo</button>
+        <FontAwesomeIcon className='icon' icon={faUser} />
+
       </footer>
     </div>
   );

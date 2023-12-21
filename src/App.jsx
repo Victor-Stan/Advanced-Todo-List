@@ -30,9 +30,9 @@ const App = () => {
       {user ? (
         <Router>
           <header className="app-header">
-            <h1>Welcome, {user.email}!</h1>
-            <p>{new Date().toDateString()}</p>
-            <button onClick={handleLogout}>Logout</button>
+            <h1 className='welcome'>Welcome, {user.email}!</h1>
+            <p className='date'>{new Date().toDateString()}</p>
+            <button className='logout' onClick={handleLogout}>Logout</button>
           </header>
           <Routes>
            <Route path="/todos/:status" element={<TodoList db={db} auth={auth} />} />
@@ -40,7 +40,13 @@ const App = () => {
          </Routes>
         </Router>
       ) : (
-        <button onClick={handleLogin}>Login with Google</button>
+        
+        <header className='the-header'>
+          <h1 className='first-h1'>Hello, Login to continue.</h1>
+          <button className='login' onClick={handleLogin}>Login with Google</button>
+          
+        </header>
+        
       )}
     </div>
   );
