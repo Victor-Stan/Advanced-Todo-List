@@ -1,7 +1,7 @@
 //firebase-config.jsx
 
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth"
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyCGOpB2mM8GGltSO4sTECRn6i1QtfZBfYs",
@@ -9,9 +9,8 @@ const firebaseConfig = {
   projectId: "react-firebase-todo-af14d",
   storageBucket: "react-firebase-todo-af14d.appspot.com",
   messagingSenderId: "185984014977",
-  appId: "1:185984014977:web:2de8f97ffa93e1a8d68b80"
+  appId: "1:185984014977:web:2de8f97ffa93e1a8d68b80",
 };
-
 
 const app = initializeApp(firebaseConfig);
 

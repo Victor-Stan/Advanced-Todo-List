@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RedirectToTodos = () => {
   let navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
-      navigate('/todos/in-progress');
+      navigate("/todos/in-progress");
     }, 0);
   }, [navigate]);
 
