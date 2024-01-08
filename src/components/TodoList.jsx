@@ -23,33 +23,50 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
   const [editTask, setEditTask] = useState({ id: null, task: "" });
+  
+  const [doneCount, setDoneCount] = useState(0);
+  const [inProgressCount, setInProgressCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const user = auth.currentUser;
-
+  
       if (user) {
-        let q = collection(db, "todos");
-        q = query(q, where("userId", "==", user.uid));
-
-        if (todoStatus === "done") {
-          q = query(q, where("status", "==", "Done"));
-        } else {
-          q = query(q, where("status", "==", "In Progress"));
-        }
-
+        const q = query(
+          collection(db, "todos"),
+          where("userId", "==", user.uid)
+        );
+  
         const unsubscribe = onSnapshot(q, (snapshot) => {
-          const data = snapshot.docs.map((doc) => ({
+          const allTodos = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
-          setTodos(data);
+  
+          // Filter todos based on their status
+          const doneTodos = allTodos.filter(
+            (todo) => todo.status === "Done"
+          );
+          const inProgressTodos = allTodos.filter(
+            (todo) => todo.status === "In Progress"
+          );
+  
+          // Set the counts
+          setDoneCount(doneTodos.length);
+          setInProgressCount(inProgressTodos.length);
+  
+      
+          if (todoStatus === "done") {
+            setTodos(doneTodos);
+          } else {
+            setTodos(inProgressTodos);
+          }
         });
-
+  
         return () => unsubscribe();
       }
     };
-
+  
     fetchData();
   }, [db, todoStatus]);
 
@@ -63,11 +80,11 @@ const TodoList = () => {
   };
 
   const deleteTodo = async (id) => {
-    await deleteDoc(doc(db, "todos", id));
+     await deleteDoc(doc(db, "todos", id));
   };
 
   const startEdit = (id, currentTask) => {
-    setEditTask({ id, task: currentTask });
+   setEditTask({ id, task: currentTask });
   };
 
   const cancelEdit = () => {
@@ -92,17 +109,18 @@ const TodoList = () => {
     await changeStatus(id, newStatus);
   };
 
+    
   return (
     <div className="todo-list">
       <div className="status-buttons">
         <Link to="/todos/done">
-          <button className="done">Done</button>
+          <button className="done">({doneCount}) <br /> Done</button>
         </Link>
         <Link to="/todos/in-progress">
-          <button className="progress">In Progress</button>
+          <button className="progress">({inProgressCount}) <br /> In Progress </button>
         </Link>
       </div>
-      <ul className="todo-items">
+       <ul className="todo-items">
         {todos.map((todo) => (
           <li key={todo.id}>
             {editTask.id === todo.id ? (
