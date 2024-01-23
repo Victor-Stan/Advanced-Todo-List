@@ -352,4 +352,140 @@ body {
     font-size: 2em;
     
   }}
- 
+
+  @media only screen and (max-width: 600px) {
+    /* Adjustments for smaller screens go here */
+    .the-header {
+      padding: 10px; /* Adjust padding for header */
+    }
+  
+    .welcome {
+      font-size: 1.2em; /* Adjust welcome message font size */
+    }
+  
+    .date {
+      font-size: 1em; /* Adjust date font size */
+      top: 40px; /* Adjust date top position */
+    }
+  
+    .logout {
+      padding: 10px 20px; /* Adjust logout button padding */
+      font-size: 1em; /* Adjust logout button font size */
+      bottom: 10%; /* Adjust logout button bottom position */
+      left: 39%;
+    }
+  
+    .todo-list {
+      padding: 10px; /* Adjust padding for todo list */
+    }
+  
+    .done {
+      padding: 20px; /* Adjust padding for done button */
+      font-size: 2em; /* Adjust done button font size */
+    }
+  
+    .progress {
+      padding: 30px; /* Adjust padding for progress button */
+      font-size: 1.5em; /* Adjust progress button font size */
+    }
+  
+    .todo-items {
+      font-size: 1em; /* Adjust todo items font size */
+    }
+  
+    .save,
+    .cancel,
+    .delete,
+    .edit,
+    .status {
+      padding: 8px; /* Adjust button padding */
+      font-size: 0.8em; /* Adjust button font size */
+    }
+  
+    .todo-footer {
+      margin-top: 10px; /* Adjust margin for todo footer */
+    }
+  
+    .todo-input {
+      padding: 8px; /* Adjust todo input padding */
+      font-size: 0.8em; /* Adjust todo input font size */
+    }
+  
+    .add-btn {
+      padding: 8px; /* Adjust add button padding */
+      font-size: 0.8em; /* Adjust add button font size */
+    }
+  
+    .icon {
+      font-size:large; /* Adjust icon font size */
+      padding: 20px;
+    }
+  }
+  
+  @media only screen and (max-width: 400px) {
+    /* Additional adjustments for smaller screens go here */
+    .the-header {
+      padding: 8px; /* Further adjust padding for header */
+    }
+  
+    .welcome {
+      font-size: 1em; /* Further adjust welcome message font size */
+    }
+  
+    .date {
+      font-size: 0.8em; /* Further adjust date font size */
+      top: 30px; /* Further adjust date top position */
+    }
+  
+    .logout {
+      padding: 8px 16px; /* Further adjust logout button padding */
+      font-size: 0.8em; /* Further adjust logout button font size */
+      bottom: 8%; /* Further adjust logout button bottom position */
+    }
+  
+    .todo-list {
+      padding: 8px; /* Further adjust padding for todo list */
+    }
+  
+    .done {
+      padding: 16px; /* Further adjust padding for done button */
+      font-size: 1.5em; /* Further adjust done button font size */
+    }
+  
+    .progress {
+      padding: 24px; /* Further adjust padding for progress button */
+      font-size: 1em; /* Further adjust progress button font size */
+    }
+  
+    .todo-items {
+      font-size: 0.8em; /* Further adjust todo items font size */
+    }
+  
+    .save,
+    .cancel,
+    .delete,
+    .edit,
+    .status {
+      padding: 6px; /* Further adjust button padding */
+      font-size: 0.7em; /* Further adjust button font size */
+    }
+  
+    .todo-footer {
+      margin-top: 8px; /* Further adjust margin for todo footer */
+    }
+  
+    .todo-input {
+      padding: 6px; /* Further adjust todo input padding */
+      font-size: 0.7em; /* Further adjust todo input font size */
+    }
+  
+    .add-btn {
+      padding: 6px; /* Further adjust add button padding */
+      font-size: 0.7em; /* Further adjust add button font size */
+    }
+  
+    .icon {
+      font-size: x-small; /* Further adjust icon font size */
+    }
+  }
+  
